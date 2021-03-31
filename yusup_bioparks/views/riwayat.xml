@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- bioparks.riwayat search view -->
+        <record id="riwayat_view_search" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.search</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <search string="Search Description">
+                    <field name="partner_id"/>
+                    <field name="jam_masuk"/>
+                    <field name="jam_keluar"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- bioparks.riwayat form view -->
+        <record id="riwayat_out_view_form" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.form</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="partner_id"/>
+                            <!-- <field name="jam_masuk"/> -->
+                            <field name="jenis" readonly="1"/>
+                            <field name="jam_keluar" attrs="{'required': [('jenis', '=', 'out')]}"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- bioparks.riwayat tree view -->
+        <record id="riwayat_out_view_tree" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.tree</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <!-- <field name="jenis"/> -->
+                    <!-- <field name="jam_masuk"/> -->
+                    <field name="jam_keluar"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="riwayat_out_action" model="ir.actions.act_window">
+            <field name="name">Laporan Keluar</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.riwayat</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('jenis','=','out')]</field>
+            <field name="context">{'default_jenis':'out'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+        <record id="riwayat_out_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_out_view_tree"/>
+            <field name="act_window_id" ref="riwayat_out_action"/>
+        </record>
+        <record id="riwayat_out_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_out_view_form"/>
+            <field name="act_window_id" ref="riwayat_out_action"/>
+        </record>
+
+
+        <!-- ==================================== MASUK =============================== -->
+        <record id="riwayat_in_view_form" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.form</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="jenis" readonly="1"/>
+                            <field name="jam_masuk" attrs="{'required': [('jenis', '=', 'in')]}"/>
+                            <!-- <field name="jam_keluar"/> -->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- bioparks.riwayat tree view -->
+        <record id="riwayat_in_view_tree" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.tree</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="jam_masuk"/>
+                    <!-- <field name="jam_keluar"/> -->
+                </tree>
+            </field>
+        </record>
+
+        <record id="riwayat_in_action" model="ir.actions.act_window">
+            <field name="name">Laporan Masuk</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.riwayat</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('jenis','=','in')]</field>
+            <field name="context">{'default_jenis':'in'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+        <record id="riwayat_in_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_in_view_tree"/>
+            <field name="act_window_id" ref="riwayat_in_action"/>
+        </record>
+        <record id="riwayat_in_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_in_view_form"/>
+            <field name="act_window_id" ref="riwayat_in_action"/>
+        </record>
+        
+        <!-- ===================== KELUAR MASUK =================================================== -->
+        <record id="riwayat_in_out_view_form" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.form</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="jenis" readonly="1"/>
+                            <field name="jam_masuk" attrs="{'required': [('jenis', '=', 'inout')]}"/>
+                            <field name="jam_keluar" />
+                            <field name="no_mesin" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- bioparks.riwayat tree view -->
+        <record id="riwayat_in_out_view_tree" model="ir.ui.view">
+            <field name="name">bioparks.riwayat.view.tree</field>
+            <field name="model">bioparks.riwayat</field>
+            <field name="arch" type="xml">
+                <tree editable="top" default_order="jam_masuk desc">
+                    <field name="name" readonly="1" invisible="1"/>
+                    <field name="partner_id"/>
+                    <field name="jam_masuk" required="1"/>
+                    <field name="jam_keluar"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="riwayat_in_out_action" model="ir.actions.act_window">
+            <field name="name">Laporan Keluar-Masuk</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.riwayat</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('jenis','=','inout')]</field>
+            <field name="context">{'default_jenis':'inout'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+        <record id="riwayat_in_out_action_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_in_out_view_tree"/>
+            <field name="act_window_id" ref="riwayat_in_out_action"/>
+        </record>
+        <record id="riwayat_in_out_action_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="yusup_bioparks.riwayat_in_out_view_form"/>
+            <field name="act_window_id" ref="riwayat_in_out_action"/>
+        </record>
+
+        <!-- This Menu Item Must have a parent -->
+        <menuitem id="riwayat_menu_categ" name="Laporan" parent="bioparks_menu_root" sequence="10"/>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="riwayat_in_menu_act" name="Masuk" parent="riwayat_menu_categ" action="riwayat_in_action" groups="group_riwayat_in" sequence="30"/>
+        <menuitem id="riwayat_out_menu_act" name="Keluar" parent="riwayat_menu_categ" action="riwayat_out_action" groups="group_riwayat_in" sequence="20"/>
+        <menuitem id="riwayat_in_out_menu_act" name="Keluar-Masuk" parent="riwayat_menu_categ" action="riwayat_in_out_action" sequence="10"/>
+    </data>
+</odoo>

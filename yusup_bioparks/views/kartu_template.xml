@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data >
+        <report
+        id='membercard'
+        name='yusup_bioparks.member_card_view'
+        model='bioparks.kendaraan'
+        string='Cetak Kartu'
+        report_type='qweb-pdf'
+        file='yusup_bioparks.member_card_view'
+       />
+
+        <template id="member_card_view">
+            <t t-call="web.basic_layout">
+                <t t-foreach="docs" t-as="doc">
+                    <div class="container rounded" style="width:90mm; height:55mm; border: solid black; float:left; margin:10px; background-image: url('/yusup_bioparks/static/description/kartu.png'); background-size:cover; background-position:center; background-repeat: no-repeat;">
+                        <div class="row">
+                            <div class="col-12" style="padding:0 10px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center pt-5 text-white">
+                                 <strong><p style="font-size: 30px; font-family:montserrat;" t-field="doc.partner_id.name"/></strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-center align-middle pt-3 text-white" style="height: 6rem">
+                                <t t-if="doc.no_mesin">
+                                    <img alt="Barcode" t-if="len(doc.no_mesin) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', quote_plus(doc.no_mesin or ''), 600, 150)" style="width:50%;height::4rem;"/>
+                                    <img alt="Barcode" t-elif="len(doc.no_mesin) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', quote_plus(doc.no_mesin or ''), 600, 150)" style="width:50%;height::4rem;"/>
+                                    <img alt="Barcode" t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', quote_plus(doc.no_mesin or ''), 600, 150)" style="width:50%;height::4rem;"/>
+                                    <p t-field="doc.no_mesin"/>
+                                </t>
+                                <t t-else=""><span class="text-muted">No barcode available</span></t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>        
+    </data>
+</odoo>

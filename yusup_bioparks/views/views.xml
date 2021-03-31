@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="yusup_bioparks.list">
+      <field name="name">yusup_bioparks list</field>
+      <field name="model">yusup_bioparks.yusup_bioparks</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="yusup_bioparks.action_window">
+      <field name="name">yusup_bioparks window</field>
+      <field name="res_model">yusup_bioparks.yusup_bioparks</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="yusup_bioparks.action_server">
+      <field name="name">yusup_bioparks server</field>
+      <field name="model_id" ref="model_yusup_bioparks_yusup_bioparks"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="yusup_bioparks" id="yusup_bioparks.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="yusup_bioparks.menu_1" parent="yusup_bioparks.menu_root"/>
+    <menuitem name="Menu 2" id="yusup_bioparks.menu_2" parent="yusup_bioparks.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="yusup_bioparks.menu_1_list" parent="yusup_bioparks.menu_1"
+              action="yusup_bioparks.action_window"/>
+    <menuitem name="Server to list" id="yusup_bioparks" parent="yusup_bioparks.menu_2"
+              action="yusup_bioparks.action_server"/>
+-->
+  </data>
+</odoo>

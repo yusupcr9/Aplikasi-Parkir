@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- bioparks.kendaraan search view -->
+        <record id="kendaraan_view_search" model="ir.ui.view">
+            <field name="name">bioparks.kendaraan.view.search</field>
+            <field name="model">bioparks.kendaraan</field>
+            <field name="arch" type="xml">
+                <search string="Search Description">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="alamat"/>
+                    <field name="merk"/>
+                    <field name="jenis"/>
+                    <field name="tahun"/>
+                    <field name="no_mesin"/>
+                    
+                    <group expand="0" string="Group By">
+                        <filter string='Pemilik' name='pemilik' context="{'group_by':'partner_id'}"/>
+                        <filter string='Jenis' name='jenis' context="{'group_by':'jenis'}"/>
+                    </group> 
+                </search>
+            </field>
+        </record>
+
+        <!-- bioparks.kendaraan form view -->
+        <record id="kendaraan_view_form" model="ir.ui.view">
+            <field name="name">bioparks.kendaraan.view.form</field>
+            <field name="model">bioparks.kendaraan</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <field name="foto" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Contoh: T 1234 AB ..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="partner_id"/>
+                                <field name="merk"/>
+                                <field name="alamat"/>
+                            </group>
+                            <group>
+                                <field name="jenis"/>
+                                <field name="tahun"/>
+                                <field name="no_mesin"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="sidik_jari" string="Data Sidik Jari">
+                                <field name="sidik_jari_ids">
+                                    <tree editable="bottom">
+                                        <field name="id_finger"/>
+                                        <field name="partner_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- bioparks.kendaraan tree view -->
+        <record id="kendaraan_view_tree" model="ir.ui.view">
+            <field name="name">bioparks.kendaraan.view.tree</field>
+            <field name="model">bioparks.kendaraan</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="alamat"/>
+                    <field name="merk"/>
+                    <field name="jenis"/>
+                    <field name="tahun"/>
+                    <field name="no_mesin"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- bioparks.kendaraan action window -->
+        <record id="kendaraan_action" model="ir.actions.act_window">
+            <field name="name">Data Kendaraan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.kendaraan</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item will appear in the Upper bar, that's why It needs NO parent or action -->
+        <menuitem id="bioparks_menu_root" name="BIOPARKS" sequence="1" web_icon="yusup_bioparks,static/description/logo.png"/>
+
+        <!-- This Menu Item Must have a parent -->
+        <menuitem id="bioparks_menu_categ" name="Master Data" parent="bioparks_menu_root" sequence="50"/>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="kendaraan_menu_act" name="Data Kendaraan" parent="bioparks_menu_categ" action="kendaraan_action" sequence="10"/>
+
+        
+    </data>
+</odoo>

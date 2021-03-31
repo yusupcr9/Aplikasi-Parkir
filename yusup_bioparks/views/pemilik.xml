@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <!-- bioparks.pemilik search view -->
+        <record id="pemilik_view_search" model="ir.ui.view">
+            <field name="name">bioparks.pemilik.view.search</field>
+            <field name="model">bioparks.pemilik</field>
+            <field name="arch" type="xml">
+                <search string="Search Description">
+                    <field name="name"/>
+                    <field name="kendaraan_id"/>
+                    <field name="alamat"/>
+                     <group expand="0" string="Group By">
+                        <filter string='Kendaraan' name='kendaraan' context="{'group_by':'kendaraan_id'}"/>
+                    </group> 
+                </search>
+            </field>
+        </record>
+
+        <!-- bioparks.pemilik form view -->
+        <record id="pemilik_view_form" model="ir.ui.view">
+            <field name="name">bioparks.pemilik.view.form</field>
+            <field name="model">bioparks.pemilik</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="kendaraan_id"/>
+                            <field name="alamat"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- bioparks.pemilik tree view -->
+        <record id="pemilik_view_tree" model="ir.ui.view">
+            <field name="name">bioparks.pemilik.view.tree</field>
+            <field name="model">bioparks.pemilik</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="kendaraan_id"/>
+                    <field name="alamat"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- bioparks.pemilik action window -->
+        <record id="pemilik_action" model="ir.actions.act_window">
+            <field name="name">Data Pemilik</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.pemilik</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

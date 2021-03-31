@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bioparks_kendaraan,access_bioparks_kendaraan,model_bioparks_kendaraan,base.group_user,1,1,1,1
+access_bioparks_pemilik,access_bioparks_pemilik,model_bioparks_pemilik,base.group_user,1,1,1,1
+access_bioparks_sidik_jari,access_bioparks_sidik_jari,model_bioparks_sidik_jari,base.group_user,1,1,1,1
+access_bioparks_riwayat,access_bioparks_riwayat,model_bioparks_riwayat,base.group_user,1,1,1,1
+access_bioparks_pengaturan,access_bioparks_pengaturan,model_bioparks_pengaturan,base.group_user,1,1,1,1

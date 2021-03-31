@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        <template id="bioparks_riwayat" name="LAPORAN BIOPARKS">
+          <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery-3.6.0.min.js"/>
+          <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery.min.js"/>
+          <!-- <script type="text/javascript" src="/yusup_bioparks/static/src/js/datatables.min.js"/> -->
+
+            <t t-call="portal.frontend_layout">
+                <div id="wrap" class="js_event_attendance o_website_event_attendance">
+                    <div class="container">
+                        <div class="row mt32 mb32">
+                            <div class="col-md-12">
+                                <div class="oe_structure"/>
+                                <h3 class="text-center">
+                                    LAPORAN BIOPARKS
+                                    <br/>
+                                    <small>
+                                      Tanggal : <span t-esc="current_date"/>
+                                    </small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                            <div class="row mt32 mb32">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Riwayat Keluar
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="riwayat" class="table table-sm table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Nama</th>
+                                                        <!-- <th>Perusahaan</th> -->
+                                                        <th>Jam Keluar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="body">
+                                                    <!-- <t t-set="no" t-value="1"/>
+                                                    <tr t-foreach="riwayats" t-as="riwayat">
+                                                        <td>
+                                                            <span t-esc="no"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="riwayat.partner_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-set="jam_keluar" t-value="riwayat.jam_keluar + datetime.timedelta(hours=7)"/>
+                                                            <span t-esc="jam_keluar"/>
+                                                        </td>
+                                                        <t t-set="no" t-value="no + 1"/>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                            <script type="text/javascript" src="/yusup_bioparks/static/src/js/riwayat.js"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="oe_structure"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="bioparks_riwayat_inout" name="LAPORAN BIOPARKS">
+          <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery-3.6.0.min.js"/>
+          <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery.min.js"/>
+          <!-- <script type="text/javascript" src="/yusup_bioparks/static/src/js/datatables.min.js"/> -->
+
+            <t t-call="portal.frontend_layout">
+                <div id="wrap" class="js_event_attendance o_website_event_attendance">
+                    <div class="container">
+                        <div class="row mt32">
+                            <div class="col-md-12">
+                                <div class="oe_structure"/>
+                                <h3 class="text-center">
+                                    LAPORAN BIOPARKS
+                                    <br/>
+                                    <small>
+                                      Tanggal : <span t-esc="current_date"/>
+                                    </small>
+                                </h3>
+                            </div>
+                        </div>
+                        <div id="monitor" class="row mt32 bg-secondary">
+                            
+                        </div>
+                        <div class="oe_structure"/>
+                            <div class="row mt32 mb32">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Riwayat Keluar-Masuk Kendaraan
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="riwayat" class="table table-sm table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Nama</th>
+                                                        <th>Jam Masuk</th>
+                                                        <th>Jam Keluar</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="body">
+                                                    <!-- <t t-set="no" t-value="1"/>
+                                                    <tr t-foreach="riwayats" t-as="riwayat">
+                                                        <td>
+                                                            <span t-esc="no"/>
+                                                        </td>
+                                                        <td>
+                                                            <span t-esc="riwayat.partner_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-set="jam_keluar" t-value="riwayat.jam_keluar + datetime.timedelta(hours=7)"/>
+                                                            <span t-esc="jam_keluar"/>
+                                                        </td>
+                                                        <t t-set="no" t-value="no + 1"/>
+                                                    </tr> -->
+                                                </tbody>
+                                            </table>
+                                            <script type="text/javascript" src="/yusup_bioparks/static/src/js/riwayat_in_out.js"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="oe_structure"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+        <template id="inherit_login" name="inherit_login" inherit_id="web.login">
+            <xpath expr="//div[@class='form-group field-login']" position="replace">
+                <img class="img img-fluid mb32" src="/yusup_bioparks/static/description/odoo.png"></img>
+                <div class="form-group field-login">
+                    <label for="login">Email/Username</label>
+                    <input type="text" placeholder="Email/Username" name="login" t-att-value="login" id="login" t-attf-class="form-control #{'form-control-sm' if form_small else ''}" required="required" autofocus="autofocus" autocapitalize="off"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>

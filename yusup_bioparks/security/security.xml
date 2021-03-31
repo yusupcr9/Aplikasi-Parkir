@@ -1,0 +1,10 @@
+<odoo>
+	<record id="group_riwayat_in" model="res.groups">
+		<field name="name">Laporan Masuk</field>
+		<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	</record>
+	<record id="group_selain_bioparks" model="res.groups">
+		<field name="name">Selain Menu Bioparks</field>
+		<field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+	</record>
+</odoo>

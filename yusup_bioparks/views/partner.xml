@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data>
+        
+        <!-- res.partner inherit search view -->
+        <record id="view_id" model="ir.ui.view">
+            <field name="name">res.partner.inherit.view.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field name="kendaraan_id"/>
+                </field>
+                <xpath expr="//filter[@name='salesperson']" position="before">
+                    <filter name="kendaraan" string="Kendaraan" domain="[]" context="{'group_by' : 'kendaraan_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- res.partner inherit tree view -->
+        <record id="bio_kendaraan_view_id" model="ir.ui.view">
+            <field name="name">res.partner.inherit.view.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <field name="active" position="after">
+                    <field name="kendaraan_id"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- res.partner inherit form view -->
+        <record id="bio_kendaraan_view_id" model="ir.ui.view">
+            <field name="name">res.partner.inherit.view.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="vat" position="after">
+                    <field name="kendaraan_id"/>
+                </field>
+            </field>
+        </record>
+
+        
+
+         <!-- res.partner action window -->
+        <record id="res_partner_action" model="ir.actions.act_window">
+            <field name="name">Pemilik</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('kendaraan_id','!=',False)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p><p>
+                    <!-- More details about what a user can do with this object will be OK --> 
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="pemilik_menu_act" name="Data Pemilik" parent="bioparks_menu_categ" action="res_partner_action" sequence="20"/>
+    </data>
+</odoo>
