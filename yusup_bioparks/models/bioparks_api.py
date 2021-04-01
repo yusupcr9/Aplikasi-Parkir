@@ -2,6 +2,7 @@ import logging
 # import base64
 from odoo import api, fields, models, _
 from odoo.addons.web.controllers.main import _serialize_exception
+from datetime import datetime, timedelta
 ADMIN_USER = 1
 
 _logger = logging.getLogger(__name__)
@@ -113,6 +114,10 @@ class RiwayatAPI(models.Model):
 
     def api_post_riwayat(self, body, **kwargs):
         new_riwayat = body.get('data', False)
+        jam_masuk = new_riwayat['jam_masuk']
+        jam_masuk_datetime = datetime.strptime(jam_masuk, '%Y-%m-%d %H:%M:%S')
+        jam_masuk_id = jam_masuk_datetime - timedelta(hours=7)
+        new_riwayat['jam_masuk'] = jam_masuk_id
         uid = kwargs.get('uid', 1)
         if new_riwayat:
             try:

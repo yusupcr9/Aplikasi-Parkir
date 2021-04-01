@@ -32,9 +32,6 @@ const char* password = "bbbbbbbb";
 String Commands_Reply;                 // The command variable that is sent to the client
 
 int pos = 0;
-int partner_id;
-String spartner;
-String sdatetime;
 
 const char * host = "192.168.43.10";          // IP Client
 
@@ -185,8 +182,6 @@ void loop() {
       lcd.print("Nama: ");
       lcd.setCursor(6, 0);
       lcd.print(myObject["result"][0][0]["partner_id"][1]);
-      int partner_id = myObject["result"][0][0]["partner_id"][0];
-      spartner = String(partner_id);
       lcd.setCursor(0, 1);
       lcd.print("NOPOL: ");
       lcd.setCursor(7, 1);
@@ -215,17 +210,16 @@ void loop() {
       Serial.print("DATE : ");
       Serial.println(dateBuffer);
 
-      sprintf(timeBuffer, "%02u:%02u:%02u", now.hour(), now.minute(), now.second());
+      sprintf(timeBuffer, "%02u:%02u:%02u ", now.hour(), now.minute(), now.second());
       Serial.print("TIME : ");
       Serial.println(timeBuffer);
       String datetime = String(dateBuffer) + String(timeBuffer);
       Serial.println("========================================");
       Serial.print("DATETIME : ");
       Serial.println(datetime);
-      sdatetime = datetime;
       Serial.println("========================================");
-      delay(1000);
-      httpPOSTRequest(serverNamePost);
+      lcd.print(datetime);
+      
       for (pos = 0; pos <= 90; pos += 1) {
         Serial.println(pos);
         myservo.write(pos);
@@ -287,30 +281,4 @@ long baca_jarak() {
   Serial.println(" cm");
 
   return distance;
-}
-
-String httpPOSTRequest(String serverNamePost) {
-  HTTPClient http;
-    
-  // Your IP address with path or Domain name with URL path 
-  http.begin(serverNamePost);
-  http.addHeader("Content-Type","application/json");
-  // Send HTTP POST request
-  int httpResponseCodePost = http.POST("{\"data\":{\"partner_id\":" +spartner+ ",\"jam_masuk\":\"" +sdatetime+ "\",\"jenis\":\"inout\"}}");
-  
-  String payload = "{}"; 
-  
-  if (httpResponseCodePost>0) {
-    Serial.print("HTTP Response code: ");
-    Serial.println(httpResponseCodePost);
-    payload = http.getString();
-  }
-  else {
-    Serial.print("Error code: ");
-    Serial.println(httpResponseCodePost);
-  }
-  // Free resources
-  http.end();
-
-  return payload;
 }
