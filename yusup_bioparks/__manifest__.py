@@ -26,6 +26,8 @@
         'security/ir.model.access.csv',
         'security/security.xml',
         'data/ir_sequence_data.xml',
+        'reports/external_layout.xml',
+        'reports/report.xml',
         'views/kendaraan.xml',
         'views/partner.xml',
         'views/sidik_jari.xml',
@@ -34,6 +36,7 @@
         'views/partner.xml',
         'views/templates.xml',
         'views/kartu_template.xml',
+        'wizard/wiz_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>  
+    <data>
+        <!-- Form untuk memilih Site dan tanggal mulai dan tanggal akhir -->
+        <record id="bioparks_riwayat_wizard_form" model="ir.ui.view">
+            <field name="name">Print laporan</field>
+            <field name="model">bioparks.riwayat.report</field>
+            <field name="arch" type="xml">
+                <form string="Print Laporan">
+                    <group string="Pilih Periode Laporan">
+                        <label for="start_date" string="Periode"/>
+                        <div class="o_row">
+                            <field name="start_date" widget="daterange" nolabel="1" class="oe_inline" options="{'related_end_date': 'end_date'}"/>
+                            <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                            <field name="end_date" widget="daterange" nolabel="1" class="oe_inline" options="{'related_start_date': 'start_date'}"/>
+                        </div>
+                    </group>
+                    <footer>                        
+                        <button name="get_report" string="Print" type="object"
+                                class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record> 
+ 
+        <!-- Action untuk membuka form diatas -->
+        <record model="ir.actions.act_window" id="action_open_riwayat_wizard_form">
+            <field name="name">Print Laporan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">bioparks.riwayat.report</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="wiz_report_menu_act" name="Print Laporan" parent="riwayat_menu_categ" action="action_open_riwayat_wizard_form" sequence="99"/>
+
+    </data>
+</odoo>

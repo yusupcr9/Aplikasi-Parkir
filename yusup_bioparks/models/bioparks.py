@@ -110,6 +110,18 @@ class History(models.Model):
                 raise ValidationError(
                     _("Anda Belum Keluar Sejak {}".format(jam.strftime('%d %B %Y %H:%M:%S'))))
 
+    @api.onchange('jam_keluar')
+    def _onchange_jam_keluar(self):
+        for i in self:
+            if i.jam_masuk and i.jam_keluar and i.jam_masuk > i.jam_keluar:
+                i.jam_masuk = i.jam_keluar
+
+    @api.onchange('jam_masuk')
+    def _onchange_jam_masuk(self):
+        for i in self:
+            if i.jam_keluar and i.jam_masuk and i.jam_masuk > i.jam_keluar:
+                i.jam_keluar = i.jam_masuk
+
 
 class BioparksPengaturan(models.Model):
     _name = 'bioparks.pengaturan'
