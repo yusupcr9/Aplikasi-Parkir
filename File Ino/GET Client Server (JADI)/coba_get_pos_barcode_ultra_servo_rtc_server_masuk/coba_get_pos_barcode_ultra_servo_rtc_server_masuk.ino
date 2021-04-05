@@ -1,3 +1,14 @@
+/*
+  Rui Santos
+  Complete project details at Complete project details at https://RandomNerdTutorials.com/esp8266-nodemcu-http-get-post-arduino/
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files.
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+*/
+
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClient.h>
@@ -194,9 +205,12 @@ void loop() {
         jarak = baca_jarak();
         delay(50);
       }
-      delay(3000);
-      lcd.clear();
-      lcd.setCursor(0, 0);
+      while (jarak < 100) {
+        jarak = baca_jarak();
+        Serial.println(jarak);
+        delay(50);
+      }
+      
       DateTime now = rtc.now();
 
 
@@ -214,9 +228,14 @@ void loop() {
       sdatetime = datetime;
       Serial.println("========================================");
       delay(1000);
+//      lcd.clear();
+//      lcd.setCursor(0, 0);
+//      lcd.print("TUTUP");
       httpPOSTRequest(serverNamePost);
       for (pos = 0; pos <= 90; pos += 1) {
         Serial.println(pos);
+//        lcd.setCursor(0,1);
+//        lcd.print(pos);
         myservo.write(pos);
         delay(50);
       }
@@ -280,16 +299,16 @@ long baca_jarak() {
 
 String httpPOSTRequest(String serverNamePost) {
   HTTPClient http;
-    
-  // Your IP address with path or Domain name with URL path 
+
+  // Your IP address with path or Domain name with URL path
   http.begin(serverNamePost);
-  http.addHeader("Content-Type","application/json");
+  http.addHeader("Content-Type", "application/json");
   // Send HTTP POST request
-  int httpResponseCodePost = http.POST("{\"data\":{\"partner_id\":" +spartner+ ",\"jam_masuk\":\"" +sdatetime+ "\",\"jenis\":\"inout\"}}");
-  
-  String payload = "{}"; 
-  
-  if (httpResponseCodePost>0) {
+  int httpResponseCodePost = http.POST("{\"data\":{\"partner_id\":" + spartner + ",\"jam_masuk\":\"" + sdatetime + "\",\"jenis\":\"inout\"}}");
+
+  String payload = "{}";
+
+  if (httpResponseCodePost > 0) {
     Serial.print("HTTP Response code: ");
     Serial.println(httpResponseCodePost);
     payload = http.getString();

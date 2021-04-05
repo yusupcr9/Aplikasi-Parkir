@@ -37,20 +37,33 @@ class ReportRiwayatAbstrak(models.AbstractModel):
         riwayats = self.env['bioparks.riwayat'].sudo().search([
             ('jam_masuk', '>=', datetime_start_min_id),
             ('jam_masuk', '<=', datetime_end_max_id)
-        ])
+        ], order="jam_masuk desc")
+
+        masuk = len(riwayats)
+        keluar = len(riwayats.filtered(lambda m: m.jam_keluar != False))
+        parkir = masuk-keluar
 
         docs = []
         for riwayat in riwayats:
+            jam_masuk = riwayat.jam_masuk
+            jam_keluar = riwayat.jam_keluar
+            if riwayat.jam_masuk:
+                jam_masuk = riwayat.jam_masuk + timedelta(hours=7)
+            if riwayat.jam_keluar:
+                jam_keluar = riwayat.jam_keluar + timedelta(hours=7)
             docs.append({
                 'nama': riwayat.partner_id.name,
-                'jam_masuk': riwayat.jam_masuk,
-                'jam_keluar': riwayat.jam_keluar
+                'jam_masuk': jam_masuk,
+                'jam_keluar': jam_keluar
             })
         value = {
             'doc_ids': docids,
             'doc_model': data['model'],
             'date_start': date_start.strftime('%d %B %Y'),
             'date_end': date_end.strftime('%d %B %Y'),
+            'masuk': masuk,
+            'keluar': keluar,
+            'parkir': parkir,
             'docs': docs,
             'company': company
         }

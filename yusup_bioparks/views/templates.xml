@@ -70,7 +70,8 @@
         <template id="bioparks_riwayat_inout" name="LAPORAN BIOPARKS">
           <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery-3.6.0.min.js"/>
           <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery.min.js"/>
-          <!-- <script type="text/javascript" src="/yusup_bioparks/static/src/js/datatables.min.js"/> -->
+          <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"/>
+          <script type="text/javascript" src="/yusup_bioparks/static/src/js/jquery.dataTables.min.js"/>
 
             <t t-call="portal.frontend_layout">
                 <div id="wrap" class="js_event_attendance o_website_event_attendance">
@@ -82,7 +83,7 @@
                                     LAPORAN BIOPARKS
                                     <br/>
                                     <small>
-                                      Tanggal : <span t-esc="current_date"/>
+                                      Tanggal : <span t-esc="current_date.strftime('%d %B %Y')"/>
                                     </small>
                                 </h3>
                             </div>

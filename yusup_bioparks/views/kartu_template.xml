@@ -13,14 +13,14 @@
         <template id="member_card_view">
             <t t-call="web.basic_layout">
                 <t t-foreach="docs" t-as="doc">
-                    <div class="container rounded" style="width:90mm; height:55mm; border: solid black; float:left; margin:10px; background-image: url('/yusup_bioparks/static/description/kartu.png'); background-size:cover; background-position:center; background-repeat: no-repeat;">
+                    <div class="container rounded mb32 mt32" style="width:90mm; height:55mm; border: solid black; float:left; margin:10px; background-image: url('/yusup_bioparks/static/description/kartu.png'); background-size:cover; background-position:center; background-repeat: no-repeat;">
                         <div class="row">
                             <div class="col-12" style="padding:0 10px;">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 text-center pt-5 text-white">
-                                 <strong><p style="font-size: 30px; font-family:montserrat;" t-field="doc.partner_id.name"/></strong>
+                            <div class="col-12 text-center pt-5 mt-3 text-white">
+                                 <strong><p style="font-size: 20px; font-family:montserrat;" t-field="doc.partner_id.name"/></strong>
                             </div>
                         </div>
                         <div class="row">

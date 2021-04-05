@@ -15,6 +15,13 @@
 #include <Arduino_JSON.h>
 #include <LiquidCrystal_I2C.h>
 #include <Adafruit_Fingerprint.h>
+#include <Servo.h>
+#include <Wire.h>
+#include "RTClib.h"
+
+RTC_DS3231 rtc;
+char dateBuffer[12];
+char timeBuffer[12];
 
 
 #if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
@@ -24,7 +31,23 @@ SoftwareSerial mySerial(14, 12);
 #endif
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
+int batas =0;
+
 LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+Servo myservo;
+int pos = 0;
+
+String sdatetime;
+
+String spartner;
+
+//=================ULTRASONIK=======================
+#define TRIGGER_PIN  0 //GPIO 0/ D8 
+#define ECHO_PIN     15 //GPIO 15/ D10
+long duration, distance, jarak;
+//==================================================
+
 const char* ssid = "Seamless@wifi.Id";
 const char* password = "bbbbbbbb";
 
@@ -37,9 +60,10 @@ WiFiServer server(80);
 //Your Domain name with URL path or IP address with path
 String serverName = "http://192.168.43.217:8069/api/v1/kendaraan/";
 String serverFinger = "http://192.168.43.217:8069/api/v1/sidik-jari/";
-String serverNamePut = "http://192.168.43.217:8069/api/v1/riwayat/G3E4E063048";
+String serverNamePut = "http://192.168.43.217:8069/api/v1/riwayat/";
 String api;
 String apiFinger;
+String apiPut;
 char settings_data[100];
 
 int Finger_ID = 255;
@@ -61,9 +85,12 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   lcd.begin();
-
+   //=======================ULTRASONIK=============================
+  pinMode(TRIGGER_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
+  //==============================================================
   Serial.println("\n\nAdafruit finger detect test");
-
+  myservo.attach(13); //D7
   // set the data rate for the sensor serial port
   finger.begin(57600);
   delay(5);
@@ -96,6 +123,20 @@ void setup() {
     Serial.print("Sensor contains "); Serial.print(finger.templateCount); Serial.println(" templates");
   }
 
+  //============================== RTC ==========================
+  if (! rtc.begin()) {
+    Serial.println("RTC tidak terbaca");
+    while (1);
+  }
+  if (rtc.lostPower()) {
+    //atur waktu sesuai waktu pada komputer
+    //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    //atur waktu secara manual
+    // January 21, 2019 jam 10:30:00
+    //rtc.adjust(DateTime(2021, 3, 28, 15, 42, 0));
+  }
+  //==================================================================
+  
   WiFi.begin(ssid, password);
   Serial.println("Connecting");
   while (WiFi.status() != WL_CONNECTED) {
@@ -118,11 +159,12 @@ void setup() {
   lcd.print("Scan Barcode ...");
   lcd.setCursor(0, 3);
   lcd.print("====================");
+  myservo.write(90);
 }
 
 void loop() {
   //Send an HTTP POST request every 10 minutes
-
+  jarak = 400;
   if ((millis() - lastTime) > timerDelay) {
     //Check WiFi connection status
     if (WiFi.status() == WL_CONNECTED) {
@@ -137,7 +179,9 @@ void loop() {
       Serial.println(req);
       client.flush();
       Commands_Reply = req;
+      Commands_Reply.trim();
       api = serverName + Commands_Reply;
+      apiPut = serverNamePut + Commands_Reply;
       sensorReadings = httpGETRequest(api);
       Serial.println(sensorReadings);
       JSONVar myObject = JSON.parse(sensorReadings);
@@ -200,6 +244,8 @@ void loop() {
       lcd.print("Nama: ");
       lcd.setCursor(6, 0);
       lcd.print(myObject["result"][0][0]["partner_id"][1]);
+      int partner_id = myObject["result"][0][0]["partner_id"][0];
+      spartner = String(partner_id);
       lcd.setCursor(0, 1);
       lcd.print("NOPOL: ");
       lcd.setCursor(7, 1);
@@ -212,11 +258,23 @@ void loop() {
 
       //      =======================================================FINGERPRINT===========================================================
 scanFinger:
+      if (batas >= 5){
+        lcd.clear();
+        lcd.setCursor(4,0);
+        lcd.print("5 Kali Salah");
+        lcd.setCursor(2,1);
+        lcd.print("Sistem Terkunci");
+        lcd.setCursor(4,2);
+        lcd.print("Anda Terduga");
+        lcd.setCursor(5,3);
+        lcd.print("\"PENCURI\"");
+        return;
+      }
       while (Finger_ID == 255) {
         Finger_ID = getFingerprintID();
         lcd.clear();
         lcd.setCursor(0, 0);
-        lcd.print("Scan FInger ....");
+        lcd.print("Scan Finger ....");
         delay(50);
       }
       if (Finger_ID == 254) {
@@ -229,16 +287,17 @@ scanFinger:
         lcd.print("Tidak Terdaftar");
         lcd.setCursor(0, 3);
         lcd.print("====================");
+        batas += 1;
         Finger_ID = 255;
         delay(1000);
         goto scanFinger;
       }
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("ID FINGER = ");
-      lcd.setCursor(12, 0);
-      lcd.print(Finger_ID);
-      delay(1000);
+//      lcd.clear();
+//      lcd.setCursor(0, 0);
+//      lcd.print("ID FINGER = ");
+//      lcd.setCursor(12, 0);
+//      lcd.print(Finger_ID);
+//      delay(1000);
       req.trim();
       String apiFInger = serverFinger + req + '/' + String(Finger_ID);
       FingerReadings = httpGETRequestFinger(apiFInger);
@@ -263,6 +322,7 @@ scanFinger:
         lcd.print("Tidak Cocok");
         lcd.setCursor(0, 3);
         lcd.print("====================");
+        batas += 1;
         delay(1000);
         Finger_ID = 255;
         goto scanFinger;
@@ -280,8 +340,52 @@ scanFinger:
       lcd.print("Selamat Jalan !!");
       lcd.setCursor(0, 3);
       lcd.print("====================");
+
+      DateTime now = rtc.now();
+
+
+      sprintf(dateBuffer, "%04u-%02u-%02u ", now.year(), now.month(), now.day());
+      Serial.print("DATE : ");
+      Serial.println(dateBuffer);
+
+      sprintf(timeBuffer, "%02u:%02u:%02u", now.hour(), now.minute(), now.second());
+      Serial.print("TIME : ");
+      Serial.println(timeBuffer);
+      String datetime = String(dateBuffer) + String(timeBuffer);
+      Serial.println("========================================");
+      Serial.print("DATETIME : ");
+      Serial.println(datetime);
+      sdatetime = datetime;
+      Serial.println("========================================");
+
+//      lcd.clear();
+//      lcd.setCursor(0,0);
+//      lcd.print(sdatetime);
+      
+      for (pos = 90; pos >= 0; pos -= 1) {
+        Serial.println(pos);
+        myservo.write(pos);
+        delay(50);
+      }
+      while (jarak > 100) {
+        jarak = baca_jarak();
+        delay(50);
+      }
+      while (jarak < 100) {
+        jarak = baca_jarak();
+        Serial.println(jarak);
+        delay(50);
+      }
       delay(1000);
       Finger_ID = 255;
+      httpPUTRequest(apiPut);
+      for (pos = 0; pos <= 90; pos += 1) {
+        Serial.println(pos);
+//        lcd.setCursor(0,1);
+//        lcd.print(pos);
+        myservo.write(pos);
+        delay(50);
+      }
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("====================");
@@ -433,4 +537,44 @@ int getFingerprintIDez() {
   Serial.print("Found ID #"); Serial.print(finger.fingerID);
   Serial.print(" with confidence of "); Serial.println(finger.confidence);
   return finger.fingerID;
+}
+
+long baca_jarak() {
+  digitalWrite(TRIGGER_PIN, LOW);  // Added this line
+  delayMicroseconds(2); // Added this line
+  digitalWrite(TRIGGER_PIN, HIGH);
+  delayMicroseconds(10); // Added this line
+  digitalWrite(TRIGGER_PIN, LOW);
+  duration = pulseIn(ECHO_PIN, HIGH);
+  distance = (duration / 2) / 29.1;
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  return distance;
+}
+
+String httpPUTRequest(String apiPut) {
+  HTTPClient http;
+
+  // Your IP address with path or Domain name with URL path
+  http.begin(apiPut);
+  http.addHeader("Content-Type", "application/json");
+  // Send HTTP POST request
+  int httpResponseCodePut = http.PUT("{\"data\":{\"partner_id\":" + spartner + ",\"jam_keluar\":\"" + sdatetime + "\",\"jenis\":\"inout\"}}");
+
+  String payload = "{}";
+
+  if (httpResponseCodePut > 0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCodePut);
+    payload = http.getString();
+  }
+  else {
+    Serial.print("Error code: ");
+    Serial.println(httpResponseCodePut);
+  }
+  // Free resources
+  http.end();
+
+  return payload;
 }

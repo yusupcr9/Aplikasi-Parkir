@@ -48,6 +48,28 @@
                             </h4>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-3">
+                            Masuk
+                        </div>
+                        <div class="col-3">
+                            : <span t-esc="masuk"></span>
+                        </div>
+                        <div class="col-3">
+                            Parkir
+                        </div>
+                        <div class="col-3">
+                            : <span t-esc="parkir"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-3">
+                            Keluar
+                        </div>
+                        <div class="col-3">
+                            : <span t-esc="keluar"></span>
+                        </div>
+                    </div>
                     <table class="table table-sm">
                         <thead>
                             <tr class="table-primary">

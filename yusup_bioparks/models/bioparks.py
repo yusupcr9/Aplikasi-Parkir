@@ -7,8 +7,6 @@ class DataKendaraan(models.Model):
     _description = 'Data Kendaraan'
 
     name = fields.Char(string='Nomor Polisi', required=True)
-    pemilik_id = fields.Many2one(
-        comodel_name='bioparks.pemilik', string='Nama Pemilik')
     partner_id = fields.Many2one(
         comodel_name='res.partner', string='Nama Pemilik', required=True)
 
@@ -53,9 +51,7 @@ class DataSidikJari(models.Model):
 
     name = fields.Char(string='Nama', default='New')
     id_finger = fields.Integer(string='ID Fingerprint', required=True)
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Nama')
-    pemilik_id = fields.Many2one(
-        comodel_name='bioparks.pemilik', string='Pemilik')
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Pemilik')
     kendaraan_id = fields.Many2one(
         comodel_name='bioparks.kendaraan', string='Kendaraan')
     no_mesin = fields.Char(
@@ -76,8 +72,6 @@ class History(models.Model):
     name = fields.Char(string='Nomor', default=lambda self: _('New'))
     partner_id = fields.Many2one(
         comodel_name='res.partner', string='Nama Pemilik')
-    pemilik_id = fields.Many2one(
-        comodel_name='bioparks.pemilik', string='Nama')
     jam_masuk = fields.Datetime(
         string='Waktu Masuk', default=fields.Datetime.now())
     jam_keluar = fields.Datetime(
