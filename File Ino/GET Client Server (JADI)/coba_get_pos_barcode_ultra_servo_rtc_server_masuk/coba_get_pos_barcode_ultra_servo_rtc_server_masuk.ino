@@ -40,6 +40,9 @@ const char * host = "192.168.43.10";          // IP Client
 
 WiFiServer server(80);
 
+#define relay1  16 //GPIO 16/ D2 (LAMPU HIJAU) -> Relay NC
+
+
 //=================ULTRASONIK=======================
 #define TRIGGER_PIN  0 //GPIO 0/ D8 
 #define ECHO_PIN     15 //GPIO 15/ D10
@@ -67,6 +70,9 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   lcd.begin();
+
+  pinMode(relay1, OUTPUT); //RELAY
+
   //=======================ULTRASONIK=============================
   pinMode(TRIGGER_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
@@ -124,6 +130,7 @@ void loop() {
       if (!client) {
         return;
       }
+      myservo.write(0);
       // Read the first line of the request -------------------------------------
       String req = client.readStringUntil('\n');
       Serial.println(req);
@@ -195,12 +202,14 @@ void loop() {
       lcd.print("====================");
       lcd.setCursor(4, 3);
       lcd.print("Selamat Jalan");
+      digitalWrite(relay1, HIGH);
       delay(1000);
-      for (pos = 90; pos >= 0; pos -= 1) {
-        Serial.println(pos);
-        myservo.write(pos);
-        delay(50);
-      }
+      myservo.write(90);
+//      for (pos = 90; pos >= 0; pos -= 1) {
+//        Serial.println(pos);
+//        myservo.write(pos);
+//        delay(50);
+//      }
       while (jarak > 100) {
         jarak = baca_jarak();
         delay(50);
@@ -210,7 +219,6 @@ void loop() {
         Serial.println(jarak);
         delay(50);
       }
-      
       DateTime now = rtc.now();
 
 
@@ -232,13 +240,14 @@ void loop() {
 //      lcd.setCursor(0, 0);
 //      lcd.print("TUTUP");
       httpPOSTRequest(serverNamePost);
-      for (pos = 0; pos <= 90; pos += 1) {
-        Serial.println(pos);
+//      for (pos = 0; pos <= 90; pos += 1) {
+//        Serial.println(pos);
 //        lcd.setCursor(0,1);
 //        lcd.print(pos);
-        myservo.write(pos);
-        delay(50);
-      }
+//        myservo.write(pos);
+//        delay(50);
+//      }
+      myservo.write(0);
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("====================");
@@ -248,7 +257,7 @@ void loop() {
       lcd.print("Scan Barcode ...");
       lcd.setCursor(0, 3);
       lcd.print("====================");
-
+      digitalWrite(relay1, LOW);
     }
     else {
       Serial.println("WiFi Disconnected");

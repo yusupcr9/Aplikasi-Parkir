@@ -3,7 +3,7 @@
 const char* ssid = "Seamless@wifi.Id";                  // Your wifi Name
 const char* password = "bbbbbbbb"; // Your wifi Password
 
-const char * host = "192.168.43.10";        // IP Server
+const char * host = "192.168.43.34";        // IP Server
 
 const int httpPort = 80;
 

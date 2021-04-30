@@ -21,6 +21,8 @@ class ReportRiwayatAbstrak(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        now = (datetime.now() + timedelta(hours=7)
+               ).strftime('%d %B %Y %H:%M:%S')
         company = self.env.company
         date_start = datetime.strptime(data['date_start'], '%Y-%m-%d')
         date_end = datetime.strptime(data['date_stop'], '%Y-%m-%d')
@@ -64,6 +66,7 @@ class ReportRiwayatAbstrak(models.AbstractModel):
             'masuk': masuk,
             'keluar': keluar,
             'parkir': parkir,
+            'tgl_cetak': now,
             'docs': docs,
             'company': company
         }

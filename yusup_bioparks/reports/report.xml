@@ -46,6 +46,9 @@
                             <h4>
                                 <strong>Periode : <span t-esc="date_start"/> s.d <span t-esc="date_end"/></strong>
                             </h4>
+                            <h5>
+                                <strong>Tanggal Cetak : <span t-esc="tgl_cetak"/></strong>
+                            </h5>
                         </div>
                     </div>
                     <div class="row">

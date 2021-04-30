@@ -42,6 +42,11 @@ String sdatetime;
 
 String spartner;
 
+
+//=======================RELAY=====================
+#define relay1  16 //GPIO 16/ D2 (LAMPU HIJAU) -> Relay NC
+#define relay2  2 //GPIO 2/ D9 (LAMPU MERAH) -> Relay NC
+//=============================================
 //=================ULTRASONIK=======================
 #define TRIGGER_PIN  0 //GPIO 0/ D8 
 #define ECHO_PIN     15 //GPIO 15/ D10
@@ -85,6 +90,10 @@ void setup() {
   Serial.begin(115200);
   delay(100);
   lcd.begin();
+  //=======================RELAY=============================
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  //==============================================================
    //=======================ULTRASONIK=============================
   pinMode(TRIGGER_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
@@ -267,6 +276,7 @@ scanFinger:
         lcd.print("Anda Terduga");
         lcd.setCursor(5,3);
         lcd.print("\"PENCURI\"");
+        digitalWrite(relay2, HIGH);
         return;
       }
       while (Finger_ID == 255) {
@@ -339,6 +349,7 @@ scanFinger:
       lcd.print("Selamat Jalan !!");
       lcd.setCursor(0, 3);
       lcd.print("====================");
+      digitalWrite(relay1, HIGH);
 
       DateTime now = rtc.now();
 
@@ -394,6 +405,7 @@ scanFinger:
       lcd.print("Scan Barcode ...");
       lcd.setCursor(0, 3);
       lcd.print("====================");
+      digitalWrite(relay1, LOW);
 
     }
     else {
